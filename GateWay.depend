@@ -301,3 +301,9 @@
 	<_mingw.h>
 	<stddef.h>
 
+1464581484 source:e:\robotproject\gateway\temp.cpp
+	<windows.h>
+	<GL/glut.h>
+	<cmath>
+	<cstdio>
+

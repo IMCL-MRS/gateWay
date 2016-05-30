@@ -273,7 +273,7 @@
 1341006776 d:\software\codeblocks-16.01mingw-nosetup\mingw\include\stdint.h
 	<stddef.h>
 
-1464446369 source:e:\robot\05-gateway\gateway\serial\src\serial.cpp
+1464448787 source:e:\robot\05-gateway\gateway\serial\src\serial.cpp
 	"../inc/SerialClass.h"
 
 1464446369 e:\robot\05-gateway\gateway\serial\inc\serialclass.h
@@ -281,14 +281,17 @@
 	<stdio.h>
 	<stdlib.h>
 
-1464446991 source:e:\robot\05-gateway\gateway\main.cpp
+1464618077 source:e:\robot\05-gateway\gateway\main.cpp
 	<windows.h>
 	<GLUT/glut.h>
 	<GL/glut.h>
+	<cmath>
+	<cstdio>
 	<stdlib.h>
 	<tchar.h>
 	<string>
 	"Serial/inc/SerialClass.h"
+	"GUI/inc/Interface.h"
 
 1464445670 source:e:\robot\05-gateway\gateway\serial\src\timeout.cpp
 	"../inc/timeout.h"
@@ -306,4 +309,19 @@
 	<GL/glut.h>
 	<cmath>
 	<cstdio>
+
+1464611523 source:e:\robot\05-gateway\gateway\interface.cpp
+	<windows.h>
+	<GL/glut.h>
+	<cmath>
+	<cstdio>
+
+1464618190 source:e:\robot\05-gateway\gateway\gui\src\interface.cpp
+	<windows.h>
+	<GL/glut.h>
+	<cmath>
+	<cstdio>
+	"../inc/Interface.h"
+
+1464617814 e:\robot\05-gateway\gateway\gui\inc\interface.h
 

@@ -42,7 +42,15 @@
 			<Add library="gdi32" />
 			<Add directory="D:/software/codeblocks-16.01mingw-nosetup/MinGW/lib" />
 		</Linker>
-		<Unit filename="temp.cpp" />
+		<Unit filename="GUI/inc/Interface.h" />
+		<Unit filename="GUI/src/Interface.cpp" />
+		<Unit filename="Serial/inc/Robot.h" />
+		<Unit filename="Serial/inc/SerialClass.h" />
+		<Unit filename="Serial/inc/TimeOut.h" />
+		<Unit filename="Serial/src/Robot.cpp" />
+		<Unit filename="Serial/src/Serial.cpp" />
+		<Unit filename="Serial/src/TimeOut.cpp" />
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

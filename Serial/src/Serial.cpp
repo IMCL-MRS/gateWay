@@ -1,5 +1,7 @@
 
+#include <stdlib.h>
 #include "../inc/SerialClass.h"
+#include "../inc/Robot.h"
 
 Serial::Serial(char *portName)
 {
@@ -143,3 +145,54 @@ bool Serial::IsConnected()
     //Simply return the connection status
     return this->connected;
 }
+
+rbNode bCastInfo[NROBOT];
+dataPack dataInfo[NROBOT];
+
+void SerialTest(int com_id){
+    printf("Welcome to the serial test app!\n\n");
+
+    char comm[64];
+    sprintf(comm, "\\\\.\\COM%d", com_id);
+	Serial* SP = new Serial(comm);    // adjust as needed
+
+	if (SP->IsConnected())
+		printf("We're connected");
+
+	char incomingData[2048] = "";			// don't forget to pre-allocate memory
+//	printf("%s\n",incomingData);
+	int dataLength = 256;
+	int readResult = 0;
+    FILE *fp = fopen( "E:\\log.txt" , "a+" );
+    if(fp == NULL){
+        printf("Open Filed!\n");
+    }
+
+	while(SP->IsConnected())
+	{
+		readResult = SP->ReadData(incomingData,dataLength);
+//      printf("Bytes read: (0 means no data available) %i\n",readResult);
+        incomingData[readResult] = 0;
+        if(readResult)
+        {
+//            for(int i = 3; i < readResult; i++){
+//                    printf("%X ",incomingData[i]);
+//            }
+//            printf("\n");
+//
+//            static rbNode* bInfo;
+//            bInfo = (rbNode*)(incomingData+4);
+//            memcpy((u8*)(&bCastInfo[(bInfo->nodeID)-1]), incomingData+4, sizeof(rbNode));
+//            //printf("id = %d ",bCastInfo[(bInfo->nodeID)-1].nodeID);
+//            DispPackInfo(bInfo->nodeID,fp);
+//
+
+            static dataPack* bInfo;
+            bInfo = (dataPack*)(incomingData+3);
+            memcpy((u8*)(&dataInfo[(bInfo->nodeID)-1]), incomingData+3, sizeof(dataInfo));
+            DispPackInfo(bInfo->nodeID,fp);
+        }
+	}
+}
+
+

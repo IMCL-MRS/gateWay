@@ -1,7 +1,10 @@
 
 #include <stdlib.h>
+#include <iostream>
+#include <queue>
 #include "../inc/SerialClass.h"
 #include "../inc/Robot.h"
+using namespace std;
 
 Serial::Serial(char *portName)
 {
@@ -159,9 +162,11 @@ void SerialTest(int com_id){
 	if (SP->IsConnected())
 		printf("We're connected");
 
-	char incomingData[2048] = "";			// don't forget to pre-allocate memory
+    std::queue<char> dataBuff;
+	char incomingData[256] = "";			// don't forget to pre-allocate memory
+//	static u8 rfRxBufWP=0;
 //	printf("%s\n",incomingData);
-	int dataLength = 256;
+	int dataLength = 255;
 	int readResult = 0;
     FILE *fp = fopen( "E:\\log.txt" , "a+" );
     if(fp == NULL){
@@ -170,27 +175,53 @@ void SerialTest(int com_id){
 
 	while(SP->IsConnected())
 	{
+	    incomingData[256] = {'\0'};
 		readResult = SP->ReadData(incomingData,dataLength);
 //      printf("Bytes read: (0 means no data available) %i\n",readResult);
-        incomingData[readResult] = 0;
+        //incomingData[readResult] = 0;
+
         if(readResult)
         {
-//            for(int i = 3; i < readResult; i++){
-//                    printf("%X ",incomingData[i]);
+//            if(readResult < 33){
+//                for(int i = 0; i < readResult; i++){
+//                    dataBuff.push(incomingData[i]);
+//                }
+//            }else{
+//                printf("size= %d",readResult);
+//                while(dataBuff.size()){
+//                    //cout<<dataBuff.front();
+//                     printf("%X ",dataBuff.front());
+//                    dataBuff.pop();
+//                }
+//            }
+/*##########################Raw Data###############################*/
+//            printf("dataLength = %d, %d:",dataLength,readResult);
+//            //count++;
+//            for(int i = 0; i < readResult; i++){
+//                printf("%X ",incomingData[i]);
 //            }
 //            printf("\n");
-//
-//            static rbNode* bInfo;
-//            bInfo = (rbNode*)(incomingData+4);
-//            memcpy((u8*)(&bCastInfo[(bInfo->nodeID)-1]), incomingData+4, sizeof(rbNode));
-//            //printf("id = %d ",bCastInfo[(bInfo->nodeID)-1].nodeID);
-//            DispPackInfo(bInfo->nodeID,fp);
-//
+/*##########################Raw Data###############################*/
 
-            static dataPack* bInfo;
-            bInfo = (dataPack*)(incomingData+3);
-            memcpy((u8*)(&dataInfo[(bInfo->nodeID)-1]), incomingData+3, sizeof(dataInfo));
+/*##########################Received Data###############################*/
+        if(incomingData[0] == 0x45){
+            static rbNode* bInfo;
+            bInfo = (rbNode*)(incomingData+3);
+            memcpy((u8*)(&bCastInfo[(bInfo->nodeID)-1]), incomingData+3, sizeof(rbNode));
             DispPackInfo(bInfo->nodeID,fp);
+        }
+/*##########################Received Data###############################*/
+
+#if 0
+/*##########################Collect Data###############################*/
+          if(incomingData[0] == 0x45){
+                static dataPack* bInfo = (dataPack *)malloc(sizeof(dataPack));
+                bInfo = (dataPack*)(incomingData+3);
+                memcpy((u8*)(&dataInfo[(bInfo->nodeID)-1]), incomingData+3, sizeof(dataPack));
+                DispPackInfo(bInfo->nodeID,fp);
+          }
+/*##########################Collect Data###############################*/
+#endif // 0
         }
 	}
 }

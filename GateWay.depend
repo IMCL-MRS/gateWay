@@ -273,8 +273,10 @@
 1341006776 d:\software\codeblocks-16.01mingw-nosetup\mingw\include\stdint.h
 	<stddef.h>
 
-1465276305 source:e:\robot\05-gateway\gateway\serial\src\serial.cpp
+1467814331 source:e:\robot\05-gateway\gateway\serial\src\serial.cpp
 	<stdlib.h>
+	<iostream>
+	<queue>
 	"../inc/SerialClass.h"
 	"../inc/Robot.h"
 
@@ -328,9 +330,9 @@
 
 1464957737 e:\robot\05-gateway\gateway\gui\inc\interface.h
 
-1465277349 e:\robot\05-gateway\gateway\serial\inc\robot.h
+1465903575 e:\robot\05-gateway\gateway\serial\inc\robot.h
 
-1465277267 source:e:\robot\05-gateway\gateway\serial\src\robot.cpp
+1467814531 source:e:\robot\05-gateway\gateway\serial\src\robot.cpp
 	<windows.h>
 	<stdio.h>
 	"../inc/Robot.h"

@@ -52,25 +52,25 @@ void DispPackInfo(int id,FILE* fp){
 //    }
     int index = id - 1;
     char str[256] = {'\0'};
-
-//#ifdef bCastData
-//    sprintf(str,"%X: {(%f,%f),(%f),(%X)\n",id,bCastInfo[index].rpos.x,bCastInfo[index].rpos.y,bCastInfo[index].angle2n,
-//           bCastInfo[index].isReady);
-//   //fseek(fp, 0, SEEK_END);
-//   fwrite(str , 1 , sizeof(str) , fp );
-//   printf("%s",str);
-//   fclose(fp);
-//
-////   DispNbrList(id);
-////   printf("}\n");
+/*##########################Received Data###############################*/
+   sprintf(str,"%X: {(%f,%f),(%f),(%X),",id,bCastInfo[index].rpos.x,bCastInfo[index].rpos.y,bCastInfo[index].angle2n,bCastInfo[index].isReady);
+   //sprintf(str,"%X: {(%f,%f),(%f),(%X),",id,bCastInfo[index].rpos.x,bCastInfo[index].rpos.y,bCastInfo[index].angle2n,bCastInfo[index].type);
+   fseek(fp, 0, SEEK_END);
+   fwrite(str , 1 , sizeof(str) , fp );
+   printf("%s",str);
+   fclose(fp);
+   DispNbrList(id);
+   printf("}\n");
+/*##########################Received Data###############################*/
 //   Sleep(200);
-//#else
-    sprintf(str,"%ld: {%d,(%f,%f),(%f),(%ld,%ld)}\n",id,dataInfo[index].timeTick,dataInfo[index].r2B1,dataInfo[index].r2B2,
+#if 0
+/*##########################Collect Data###############################*/
+    //sprintf(str,"%d: {%d,(%f,%f),(%f),(%ld,%ld)}\n",dataInfo[index].nodeID,dataInfo[index].timeTick,dataInfo[index].r2B1,dataInfo[index].r2B2,
+    sprintf(str,"%d:%d,%f,%f,%f,%ld,%ld\n",dataInfo[index].nodeID,dataInfo[index].timeTick,dataInfo[index].r2B1,dataInfo[index].r2B2,
     dataInfo[index].angle2n,dataInfo[index].xValue,dataInfo[index].yValue);
-    fwrite(str , 1 , sizeof(str) , fp );
     printf("%s",str);
-    fclose(fp);
-//#endif // DATA_FUSION
+/*##########################Collect Data###############################*/
+#endif // 0
 }
 
 void Log(char *str){

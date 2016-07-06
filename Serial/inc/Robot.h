@@ -3,7 +3,7 @@
 #define _ROBOT_H
 
 
-const int NROBOT = 4;
+const int NROBOT = 6;
 
 typedef unsigned char uint8;
 typedef unsigned short int uint16;
@@ -40,8 +40,8 @@ typedef struct dataPack{
   	float r2B1;
 	float r2B2;
 	float angle2n;
-	signed long xValue;
-	signed long yValue;
+	u32 xValue;
+	u32 yValue;
 }dataPack;
 
 extern void SerialTest(int com_id);

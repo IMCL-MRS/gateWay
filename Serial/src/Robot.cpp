@@ -52,6 +52,7 @@ void DispPackInfo(int id,FILE* fp){
 //    }
     int index = id - 1;
     char str[256] = {'\0'};
+#if 1
 /*##########################Received Data###############################*/
    sprintf(str,"%X: {(%f,%f),(%f),(%X),",id,bCastInfo[index].rpos.x,bCastInfo[index].rpos.y,bCastInfo[index].angle2n,bCastInfo[index].isReady);
    //sprintf(str,"%X: {(%f,%f),(%f),(%X),",id,bCastInfo[index].rpos.x,bCastInfo[index].rpos.y,bCastInfo[index].angle2n,bCastInfo[index].type);
@@ -61,7 +62,8 @@ void DispPackInfo(int id,FILE* fp){
    fclose(fp);
    DispNbrList(id);
    printf("}\n");
-/*##########################Received Data###############################*/
+/*##########################Collect Data###############################*/
+#endif // 1
 //   Sleep(200);
 #if 0
 /*##########################Collect Data###############################*/

@@ -68,7 +68,7 @@ void DispPackInfo(int id,FILE* fp){
    printf("%s",str);
    fclose(fp);
    DispNbrList(id);
-   dispInfo(id); //wj test
+   //dispInfo(id); //wj test
    printf("}\n");
 /*##########################Collect Data###############################*/
 #endif // 1

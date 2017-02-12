@@ -212,7 +212,8 @@ void SerialTest(int com_id){
 			if (((int)bInfo->nodeID) > NROBOT)
 				continue;
             memcpy((u8*)(&bCastInfo[(bInfo->nodeID)-1]), incomingData+3, sizeof(rbNode));
-            DispPackInfo(bInfo->nodeID,fp);
+			//if ((int)(bInfo->nodeID) == 1)
+				DispPackInfo(bInfo->nodeID,fp);
         }
 /*##########################Received Data###############################*/
 

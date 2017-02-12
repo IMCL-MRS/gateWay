@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <queue>
+#include <ctime>
 #include "../inc/SerialClass.h"
 #include "../inc/Robot.h"
 using namespace std;
@@ -168,8 +169,9 @@ void SerialTest(int com_id){
 	printf("%s\n",incomingData);
 	int dataLength = 255;
 	int readResult = 0;
-	FILE *fp = nullptr;
-	int rt = fopen_s(&fp, "E:\\log.txt", "a+");
+	char filename[100];
+	sprintf_s(filename, "%d.log", time(0));
+	FILE *fp = fopen(filename, "w");
     if(fp == NULL){
         printf("Open Filed!\n");
     }
@@ -215,6 +217,7 @@ void SerialTest(int com_id){
 			//if ((int)(bInfo->nodeID) == 1)
 				DispPackInfo(bInfo->nodeID,fp);
         }
+		fflush(fp);
 /*##########################Received Data###############################*/
 
 #if 0

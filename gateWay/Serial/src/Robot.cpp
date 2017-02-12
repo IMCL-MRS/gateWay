@@ -63,13 +63,12 @@ void DispPackInfo(int id,FILE* fp){
 /*##########################Received Data###############################*/
    sprintf_s(str,"%X: {(%f,%f),(%f),(%X),",id,bCastInfo[index].rpos.x,bCastInfo[index].rpos.y,bCastInfo[index].angle2n,bCastInfo[index].isReady);
    //sprintf(str,"%X: {(%f,%f),(%f),(%X),",id,bCastInfo[index].rpos.x,bCastInfo[index].rpos.y,bCastInfo[index].angle2n,bCastInfo[index].type);
-   fseek(fp, 0, SEEK_END);
-   fwrite(str , 1 , sizeof(str) , fp );
+   fprintf_s(fp, "%s", str);
    printf("%s",str);
-   fclose(fp);
    DispNbrList(id);
    //dispInfo(id); //wj test
    printf("}\n");
+   fprintf_s(fp, "}\n");
 /*##########################Collect Data###############################*/
 #endif // 1
 //   Sleep(200);
@@ -85,14 +84,11 @@ void DispPackInfo(int id,FILE* fp){
 
 void Log(char *str){
    printf("%s",str);  
-   FILE *fp = nullptr;
-   int rt = fopen_s(&fp, "E:\\log.txt", "a+");
-   fseek(fp, 0, SEEK_END);
+   FILE *fp = fopen("log.txt", "w");
    if(fp == NULL){
     printf("Open failed!\n");
     return;
    }
-   fwrite(str , 1 , sizeof(str) , fp );
    fclose(fp);
 }
 

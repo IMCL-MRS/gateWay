@@ -153,18 +153,17 @@ rbNode bCastInfo[NROBOT];
 dataPack dataInfo[NROBOT];
 
 void SerialTest(int com_id){
-    printf("Welcome to the serial test app!\n\n");
+	printf("########Gateway for Multi-robot System########\n");
 
     char comm[64];
     sprintf_s(comm, "\\\\.\\COM%d", com_id);
 	Serial* SP = new Serial(comm);    // adjust as needed
 
 	if (SP->IsConnected())
-		printf("We're connected");
+		fprintf(stdout, "COM%d is connected.", com_id);
 
     std::queue<char> dataBuff;
 	static char incomingData[512] = "";			// don't forget to pre-allocate memory
-//	static u8 rfRxBufWP=0;
 	printf("%s\n",incomingData);
 	int dataLength = 255;
 	int readResult = 0;
@@ -212,8 +211,8 @@ void SerialTest(int com_id){
 			if (((int)bInfo->nodeID) > NROBOT)
 				continue;
             memcpy((u8*)(&bCastInfo[(bInfo->nodeID)-1]), incomingData+3, sizeof(rbNode));
-			//if ((int)(bInfo->nodeID) == 1)
-				DispPackInfo(bInfo->nodeID,fp);
+			//if ((int)(bInfo->nodeID) == 8)
+				DispPackInfo(bInfo->nodeID, fp);
         }
 /*##########################Received Data###############################*/
 

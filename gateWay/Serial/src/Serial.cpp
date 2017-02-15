@@ -70,7 +70,7 @@ Serial::Serial(char *portName)
                  //Flush any remaining characters in the buffers
                  PurgeComm(this->hSerial, PURGE_RXCLEAR | PURGE_TXCLEAR);
                  //We wait 2s as the dMEMs board will be reseting
-                 Sleep(DMEMS_WAIT_TIME);
+                 //Sleep(DMEMS_WAIT_TIME); //modified
              }
         }
     }
@@ -161,12 +161,11 @@ void SerialTest(int com_id){
 	Serial* SP = new Serial(comm);    // adjust as needed
 
 	if (SP->IsConnected())
-		fprintf(stdout, "COM%d is connected.", com_id);
+		fprintf(stdout, "COM%d is connected.\n", com_id);
 
     std::queue<char> dataBuff;
-	static char incomingData[512] = "";			// don't forget to pre-allocate memory
-	printf("%s\n",incomingData);
-	int dataLength = 255;
+	unsigned char incomingData[512] = "";		// don't forget to pre-allocate memory	
+	int dataLength = 37;
 	int readResult = 0;
 	char filename[100];
 	sprintf_s(filename, "%d.log", time(0));
@@ -174,62 +173,33 @@ void SerialTest(int com_id){
     if(fp == NULL){
         printf("Open Filed!\n");
     }
-	static rbNode* bInfo = (rbNode *)malloc(sizeof(rbNode));
+	rbNode bInfo;
 	
 	while(SP->IsConnected())
 	{
-		readResult = SP->ReadData(incomingData,dataLength);
-       /* printf("Bytes read: (0 means no data available) %i\n",readResult);
-        incomingData[readResult] = 0;*/
-
-        if(readResult)
-        {
-//            if(readResult < 33){
-//                for(int i = 0; i < readResult; i++){
-//                    dataBuff.push(incomingData[i]);
-//                }
-//            }else{
-//                printf("size= %d",readResult);
-//                while(dataBuff.size()){
-//                    //cout<<dataBuff.front();
-//                     printf("%X ",dataBuff.front());
-//                    dataBuff.pop();
-//                }
-//            }
-/*##########################Raw Data###############################*/
-//            printf("dataLength = %d, %d:",dataLength,readResult);
-//            //count++;
-//            for(int i = 0; i < readResult; i++){
-//                printf("%X ",incomingData[i]);
-//            }
-//            printf("\n");
-/*##########################Raw Data###############################*/
-
+		readResult = SP->ReadData((char *)incomingData,dataLength);
+        //printf("Bytes read: (0 means no data available) %i\n",readResult);
+        incomingData[readResult] = 0;
+		for (int i = 0; i < readResult; ++i) {
+			dataBuff.push(incomingData[i]);
+		}
+		int sz = 37;
+		if (dataBuff.size() >= sz) {
+			int k = 0;
+			for (int i = 0; i < sz; ++i) {
+				//printf("%02X ", dataBuff.front());
+				incomingData[k++] = dataBuff.front();
+				dataBuff.pop();
+			}
+			//puts("");
 /*##########################Received Data###############################*/
-        if(incomingData[0] == 0x45){
-			//memset(bInfo, 0, sizeof(rbNode));
-            bInfo = (rbNode*)(incomingData+3);
-			//cout << "nodeID:" << (int)bInfo->nodeID << endl;
-			if (((int)bInfo->nodeID) > NROBOT)
-				continue;
-            memcpy((u8*)(&bCastInfo[(bInfo->nodeID)-1]), incomingData+3, sizeof(rbNode));
+			memcpy(&bInfo, incomingData+4, sizeof bInfo);
+			bCastInfo[bInfo.nodeID - 1] = bInfo;
 			//if ((int)(bInfo->nodeID) == 8)
-				DispPackInfo(bInfo->nodeID, fp);
-        }
-		fflush(fp);
+				DispPackInfo(bInfo.nodeID, fp);
+			fflush(fp);
 /*##########################Received Data###############################*/
-
-#if 0
-/*##########################Collect Data###############################*/
-          if(incomingData[0] == 0x45){
-                static dataPack* bInfo = (dataPack *)malloc(sizeof(dataPack));
-                bInfo = (dataPack*)(incomingData+3);
-                memcpy((u8*)(&dataInfo[(bInfo->nodeID)-1]), incomingData+3, sizeof(dataPack));
-                DispPackInfo(bInfo->nodeID,fp);
-          }
-/*##########################Collect Data###############################*/
-#endif // 0
-        }
+		}
 	}
 }
 

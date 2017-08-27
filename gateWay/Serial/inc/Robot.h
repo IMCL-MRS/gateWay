@@ -11,6 +11,9 @@ typedef char int8_t;
 typedef short int int16_t;
 typedef long int32_t;
 
+/*
+ * package information for robot-v2
+*/
 #pragma pack(push)
 #pragma pack(1)
 //typedef struct rbNode{
@@ -25,14 +28,14 @@ typedef long int32_t;
 //}rbNode;
 
 typedef struct rbNode{
-	uint16_t id;
-	int16_t  speedL;
-	int16_t  speedR;
-	int16_t  dir;
-	int16_t  locationX;
-	int16_t  locationY;
-	uint8_t  infSensor;
-	uint16_t crc16Res;
+	uint16_t id;           //ID of robot
+	int16_t  speedL;       //left wheel speed of robot
+	int16_t  speedR;       //right wheel speed of robot
+	int16_t  dir;          //direction angle according to x axis
+	int16_t  locationX;    //x location
+	int16_t  locationY;    //y location
+	uint8_t  infSensor;    //Infra-Red sensor
+	uint16_t crc16Res;     //checksum value
 }rbNode;
 #pragma pack(pop)
 

@@ -1,3 +1,5 @@
-.Debug/*
-.x64/*
-.GateWay/Debug/*
+
+*/Debug/*
+*/x64/*
+*/GateWay/Debug/*
+*/GateWay/x64/*

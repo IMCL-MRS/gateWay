@@ -8,7 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void SerialTest(int com_id);
+void SerialReadTest(int com_id);
+void SerialWriteTest(int com_id);
 
 class Serial
 {

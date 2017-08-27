@@ -152,8 +152,10 @@ bool Serial::IsConnected()
 
 rbNode bCastInfo[NROBOT];
 dataPack dataInfo[NROBOT];
+static int16_t  cx[1000], cy[1000];
+int m = 0, n = 0;
 
-void SerialTest(int com_id){
+void SerialReadTest(int com_id){
 	printf("########Gateway for Multi-robot System########\n");
 
     char comm[64];
@@ -164,8 +166,9 @@ void SerialTest(int com_id){
 		fprintf(stdout, "COM%d is connected.\n", com_id);
 
     std::queue<char> dataBuff;
-	unsigned char incomingData[512] = "";		// don't forget to pre-allocate memory	
-	int dataLength = 37;
+	static unsigned char incomingData[1000] = "";		// don't forget to pre-allocate memory	
+	static unsigned char incomingDataOut[1000] = "";
+	int dataLength = 36;
 	int readResult = 0;
 	char filename[100];
 	sprintf_s(filename, "%d.log", time(0));
@@ -173,33 +176,63 @@ void SerialTest(int com_id){
     if(fp == NULL){
         printf("Open Filed!\n");
     }
-	rbNode bInfo;
+	static rbNode bInfo;
 	
 	while(SP->IsConnected())
 	{
 		readResult = SP->ReadData((char *)incomingData,dataLength);
         //printf("Bytes read: (0 means no data available) %i\n",readResult);
-        incomingData[readResult] = 0;
-		for (int i = 0; i < readResult; ++i) {
-			dataBuff.push(incomingData[i]);
-		}
-		int sz = 37;
-		if (dataBuff.size() >= sz) {
-			int k = 0;
-			for (int i = 0; i < sz; ++i) {
-				//printf("%02X ", dataBuff.front());
-				incomingData[k++] = dataBuff.front();
-				dataBuff.pop();
+		if (readResult){
+			incomingData[readResult] = 0;
+			for (int i = 0; i < readResult; ++i) {
+				dataBuff.push(incomingData[i]);
 			}
-			//puts("");
-/*##########################Received Data###############################*/
-			memcpy(&bInfo, incomingData+4, sizeof bInfo);
-			bCastInfo[bInfo.nodeID - 1] = bInfo;
-			//if ((int)(bInfo->nodeID) == 8)
-				DispPackInfo(bInfo.nodeID, fp);
-			fflush(fp);
-/*##########################Received Data###############################*/
+			if (dataBuff.size() >= 36){
+				int k = 0;
+				for (int i = 0; i < 36; i++){
+					incomingDataOut[k] = dataBuff.front();
+					k++;
+					dataBuff.pop();
+				}
+				memcpy((unsigned char *)(&bInfo), incomingDataOut + 3, sizeof(incomingDataOut));
+				if (bInfo.id < 100){
+					printf("%d,(%d,%d),%d,(%d,%d),0x%X\n", bInfo.id, bInfo.locationX, bInfo.locationY, \
+						bInfo.dir, bInfo.speedL, bInfo.speedR, bInfo.infSensor);
+
+					//mag parameters
+					/*printf("%d,(%d,%d),(%d,%d),(%d,%d)\n", bInfo.id, bInfo.magX, bInfo.magY, \
+						bInfo.magX, bInfo.minX, bInfo.magY, bInfo.minY);*/
+				}
+			}
 		}
+	}
+}
+
+
+bool writeDataSerial(Serial *SP, rbNode bInfo){
+	unsigned char outPutData[512] = "";
+	memcpy(outPutData, &bInfo, sizeof bInfo);
+	int ret = SP->WriteData((char *)outPutData, sizeof(bInfo));
+	return ret;
+}
+
+void SerialWriteTest(int com_id){
+	printf("########Gateway for Multi-robot System########\n");
+
+	char comm[64];
+	sprintf_s(comm, "\\\\.\\COM%d", com_id);
+	Serial* SP = new Serial(comm);    // adjust as needed
+
+	if (SP->IsConnected())
+		fprintf(stdout, "COM%d is connected.\n", com_id);
+	std::queue<char> dataBuff;
+	unsigned char writeData[512] = "";		// don't forget to pre-allocate memory	
+	int dataLength = 32;
+	int readResult = 0;
+	while (SP->IsConnected())
+	{
+		rbNode bInfo;
+		memset(&bInfo,0,sizeof(bInfo));	
 	}
 }
 

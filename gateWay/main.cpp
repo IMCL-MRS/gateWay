@@ -5,7 +5,8 @@
 #include "Serial/inc/Robot.h"
 
 int main(){
-	SerialTest(3); //3 is COM3
+	SerialReadTest(3); //3 is COM3
+	//SerialWriteTest(3); 
 	system("pause");
 	return 0;
 }

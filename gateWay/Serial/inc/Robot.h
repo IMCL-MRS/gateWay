@@ -2,60 +2,51 @@
 #ifndef _ROBOT_H
 #define _ROBOT_H
 
-
 const int NROBOT = 8;
 
-typedef unsigned char uint8;
-typedef unsigned short int uint16;
-typedef unsigned long uint32;
+typedef unsigned char uint8_t;
+typedef unsigned short int uint16_t;
+typedef unsigned long uint32_t;
+typedef char int8_t;
+typedef short int int16_t;
+typedef long int32_t;
 
-typedef uint32  u32;
-typedef uint16 u16;
-typedef uint8  u8;
+#pragma pack(push)
+#pragma pack(1)
+//typedef struct rbNode{
+//	uint16_t id;
+//	int16_t  magX;
+//	int16_t  magY;
+//	int16_t  maxX;
+//	int16_t  minX;
+//	int16_t  maxY;
+//	uint8_t  minY;
+//	uint16_t crc16Res;
+//}rbNode;
 
-
-typedef struct robotPos{
-  float x;        //4bytes
-  float y;        //4bytes
-}robotPos;                //8bytes
-
-//package information 28 Bytes
-typedef struct rbNode
-{
-	u8 nodeID;           //1 byte
-	robotPos rpos;       //8 bytes
-	float angle2n;       //4 bytes
-	u8 isActive;         //1 byte
-	u8 isLeaderOK;       //1 byte
-	u8 isReady;          //1 bytes
-	u8 isFoundPath;      //1 byte
-	u8 type;		     //1 byte
-	u8 isStop;           //1 byte
-	u8 nbrList[NROBOT];  //6 byte
+typedef struct rbNode{
+	uint16_t id;
+	int16_t  speedL;
+	int16_t  speedR;
+	int16_t  dir;
+	int16_t  locationX;
+	int16_t  locationY;
+	uint8_t  infSensor;
+	uint16_t crc16Res;
 }rbNode;
+#pragma pack(pop)
 
 typedef struct dataPack{
-    u8 nodeID;
+	uint8_t nodeID;
     signed long timeTick;
-  	float r2B1;
-	float r2B2;
-	float angle2n;
-	u32 xValue;
-	u32 yValue;
+	uint16_t r2B1;
+	uint16_t r2B2;
+	uint16_t angle2n;
+	uint32_t xValue;
+	uint32_t yValue;
 }dataPack;
 
 extern void SerialTest(int com_id);
-extern u8 GetRobotID(u8 id);
-extern robotPos GetCoordinate(u8 id);
-extern float GetNorthAngle(u8 id);
-extern u8 GetActiveInfo(u8 id);
-extern u8 GetReadyInfo(u8 id);
-extern u8 GetPathFoundInfo(u8 id);
-extern u8 GetRobotType(u8 id);
-extern u8 GetStopInfo(u8 id);
-extern void DispNbrList(u8 id);
-extern void DispPackInfo(int id,FILE* fp);
-extern void dispInfo(int id);
-extern void Log(char *str);
+extern void DispPackInfo(uint16_t id, FILE* fp);
 
 #endif
